@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.or.ksmart.ksmart_layout1.mapper.GoodsMapper">
+
+	<delete id="delGoods" parameterType="String">
+		DELETE g
+		FROM tb_goods g INNER JOIN tb_member m
+		WHERE 
+			g.g_code = #{goodsCode}
+		AND	
+			m.m_id= #{memberId}
+		AND
+			m.m_pw= #{memberPw}
+	</delete>
+
+	<update id="modifyGoods" parameterType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		UPDATE tb_goods
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="#{goodsName} neq null	 ||#{goodsName} neq ''.toString()">g_name= 		#{goodsName},</if>
+			<if test="#{goodsCate} neq null	 ||#{goodsCate} neq ''.toString()">g_cate= 		#{goodsCate},</if>
+			<if test="#{goodsPrice} neq null ||#{goodsPrice} neq ''.toString()">g_price=	#{goodsPrice},</if>
+			<if test="#{goodsColor} neq null ||#{goodsColor} neq ''.toString()">g_color=	#{goodsColor},</if>
+			<if test="#{goodsSize} neq null	||#{goodsSize} neq ''.toString()">g_size= 		#{goodsSize},</if>
+			<if test="#{goodsDesc} neq null ||#{goodsDesc} neq ''.toString()">g_desc= 		#{goodsDesc},</if>
+		</trim>
+		WHERE
+			g_code = #{goodsCode}
+	</update>
+
+	<select id="getGoodsByCode" parameterType="String"  resultType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		SELECT 
+			g_code 		AS goodsCode
+			,g_name 	AS goodsName
+			,g_cate 	AS goodsCate
+			,g_price 	AS goodsPrice
+			,g_color 	AS goodsColor
+			,g_size 	AS goodsSize
+			,g_date 	AS goodsDate
+			,g_desc 	AS goodsDesc
+		FROM tb_goods
+		WHERE
+			g_code = 	#{goodsCode}
+	</select>
+	<select id="getGoodsList" resultType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		SELECT 
+			g.g_code 	AS goodsCode
+			,g.m_id 	AS memberId
+			,g.g_name 	AS goodsName
+			,g.g_cate 	AS goodsCate
+			,g.g_price 	AS goodsPrice
+			,g.g_color 	AS goodsColor
+			,g.g_size 	AS goodsSize
+			,g.g_date 	AS goodsDate
+			,g.g_desc 	AS goodsDesc
+			,m.m_pw 	AS memberPw
+			,m.m_level 	AS memberLevel
+			,m.m_name 	AS memberName
+			,m.m_email 	AS memberEmail
+		FROM tb_goods g 
+		inner JOIN tb_member m
+		ON 
+			g.m_id = m.m_id
+	</select>
+	<select id="sGoodslist" parameterType="String" resultType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		SELECT 
+			g.g_code 	AS goodsCode
+			,g.m_id 	AS memberId
+			,g.g_name	AS goodsName
+			,g.g_cate	AS goodsCate
+			,g.g_price	AS goodsPrice
+			,g.g_color	AS goodsColor
+			,g.g_size	AS goodsSize
+			,g.g_date 	AS goodsDate
+			,g.g_desc	AS goodsDesc
+			,m.m_pw 	AS memberPw
+			,m.m_level 	AS memberLevel
+			,m.m_name 	AS memberName
+			,m.m_email	AS memberEmail
+		FROM tb_goods g 
+		INNER JOIN tb_member m
+		ON 
+			g.m_id = m.m_id
+		<trim prefix="where" prefixOverrides="AND|OR">	
+			<if test="sv neq null and sv neq ''.toString()"> 
+				AND ${sk} LIKE CONCAT('%', #{sv}, '%')
+			</if>
+			<if test="firstMoney neq null and firstMoney neq ''.toString()">
+				AND g.g_price >= CAST(#{firstMoney} AS DECIMAL)
+			</if>	
+			<if test="lastMoney neq null and lastMoney neq ''.toString()">
+				AND g.g_price <![CDATA[<=]]> CAST(#{lastMoney} AS DECIMAL)
+			</if>
+		</trim>
+		 ORDER BY CAST(g.g_price AS DECIMAL) desc
+	</select>
+	<insert id="addGoods" parameterType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		INSERT INTO tb_goods(
+			g_code
+			,m_id 
+			,g_name 
+			,g_cate 
+			,g_price 
+			,g_color 
+			,g_size 
+			,g_date 
+			,g_desc
+			)
+		VALUES(
+			#{goodsCode} 
+			,#{memberId} 
+			,#{goodsName} 
+			,#{goodsCate} 
+			,#{goodsPrice}
+			,#{goodsColor} 
+			,#{goodsSize}
+			,NOW()
+			,#{goodsDesc}
+			)
+	</insert>
+	<select id="getGoodsCodeMax" resultType="int">
+		SELECT 
+		MAX(CAST(substring(g_code,7) AS DECIMAL)) 
+		AS maxcol 
+		FROM tb_goods
+	</select>
+	
+	<insert id="addGoods1" parameterType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		<selectKey keyProperty="goodsCode" resultType="String" order="BEFORE">
+			SELECT 
+			CONCAT('goods_', MAX(CAST(substring(g_code,7) AS DECIMAL)+1)) 
+			AS gCode 
+			FROM tb_goods
+		</selectKey>
+		INSERT INTO tb_goods(
+			g_code 
+			,m_id 
+			,g_name 
+			,g_cate 
+			,g_price 
+			,g_color 
+			,g_size 
+			,g_date 
+			,g_desc
+			)
+		VALUES(
+			#{goodsCode} 
+			,#{memberId} 
+			,#{goodsName} 
+			,#{goodsCate} 
+			,#{goodsPrice}
+			,#{goodsColor} 
+			,#{goodsSize}
+			,curdate()
+			,#{goodsDesc}
+			)
+	</insert>
+</mapper>

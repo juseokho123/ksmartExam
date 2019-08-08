@@ -12,10 +12,16 @@
 		<a href="/goodsList">04상품전체검색</a>
 		<!-- 당신의 아이디 <%= S_ID %> <%= S_NAME %> 님 <%= S_LEVEL %> 권한 -->
 		<a th:href="@{/login}" th:if="${session.S_ID eq null}" style="text-align: right;">로그인</a>
+		
+		<a href="/addBoard" th:unless="${session.S_ID eq null}">게시판등록</a>
+		<a th:href="@{/bList}">게시판</a>
+		
 		<th:block th:unless="${session.S_ID eq null}">
+		<br>
 			<label>당신의 아이디: [[${session.S_ID}]] [[${session.S_NAME}]] 님 [[${session.S_LEVEL}]] 권한</label>
 			<a th:href="@{/logout}" style="text-align: right;">로그아웃</a>
 		</th:block>
+		
 	</div>
 	<!-- End Header -->
 	

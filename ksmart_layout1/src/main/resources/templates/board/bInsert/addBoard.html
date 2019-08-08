@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<th:block layout:fragment="customTitle">
+	<title>board insert</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form action="/addBoard" method="post">
+		<table border="1">
+			<tr>
+				<td>게시판<br/> 비밀번호</td>
+				<td><input type="password" name=boardPw size="70"></td>
+			</tr>
+			<tr>
+				<td>게시판 <br/>글쓴이</td>
+				<td>
+					<input type="text" size="70" th:value="${session.S_ID}" readonly="readonly">
+					<input type="hidden" name="boardUser" th:value="${session.S_ID}">
+				</td>
+			</tr>
+			<tr>
+				<td>게시판<br/> 제목</td>
+				<td><input type="text" size="70" name=boardTitle></td>
+			</tr>
+			<tr>
+				<td>게시판 <br/>내용</td>
+				<td>
+					<textarea style="resize: none" rows="24" cols="72"name=boardContent></textarea>
+				</td>
+			</tr>
+			<tr style="text-align: right;">
+				<td colspan="2">
+				<button type="submit">게시판등록</button>
+				</td>
+			</tr>
+		
+		</table>
+	</form>
+</th:block>
+
+</html>

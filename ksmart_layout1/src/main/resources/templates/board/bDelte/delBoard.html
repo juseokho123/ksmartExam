@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<th:block layout:fragment="customTitle">
+	<title>board insert</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form action="/DelBoard" method="post">
+		<table border="1">
+			<tr>
+				<td>게시판<br> 번호</td>
+				<td><input type="text" name="boardNo" th:value="${del.boardNo}"></td>
+			</tr>
+			<tr>
+				<td>게시판<br/> 비밀번호</td>
+				<td><input type="password" name="boardPw"></td>
+			</tr>
+			<tr style="text-align: right;">
+				<td colspan="2">
+				<button type="submit">게시판 삭제</button>
+				</td>
+			</tr>
+		</table>
+		<label th:if="${result ne null}" th:text="${result}"></label>
+	</form>
+</th:block>
+
+</html>

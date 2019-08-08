@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+<th:block layout:fragment="customTitle">
+	<title>board update</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form action="/ModifyBoard" method="post">
+		<table border="1">
+			<tr>
+				<td>글번호</td>
+				<td><input type="text" name=boardNo th:value="${board.boardNo}" size="70" readonly="readonly"></td>
+			</tr>
+			<tr>
+				<td>게시판<br/> 비밀번호</td>
+				<td><input type="password" name=boardPw  size="70"></td>
+			</tr>
+			<tr>
+				<td>게시판 <br/>글쓴이</td>
+				<td>
+					<input type="text" size="70" th:value="${board.boardUser}" readonly="readonly">
+					<input type="hidden" name="boardUser" th:value="${board.boardUser}">
+				</td>
+			</tr>
+			<tr>
+				<td>게시판<br/> 제목</td>
+				<td><input type="text" size="70" th:value="${board.boardTitle}" name=boardTitle></td>
+			</tr>
+			<tr>
+				<td>게시판 <br/>내용</td>
+				<td>
+					<textarea style="resize: none" rows="15" cols="72"name=boardContent th:text="${board.boardContent}"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>게시판<br/> 등록날짜</td>
+				<td><input type="text" size="70" name=boardDate th:value="${board.boardDate}"  readonly="readonly"></td>
+			</tr>
+			<tr style="text-align: right;">
+				<td colspan="2">
+				<button type="submit">게시판등록</button>
+				</td>
+			</tr>
+		
+		</table>
+	</form>
+</th:block>
+
+</html>

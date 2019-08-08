@@ -16,7 +16,6 @@
 <select id ="getBoardAllCount" resultType="int">
 	SELECT COUNT(*) FROM board
 
-
 </select>
 <select id="boardList" resultType="kr.or.ksmart.ksmart_layout1.vo.Board">
 	SELECT 
@@ -44,5 +43,36 @@
 			${sk} LIKE CONCAT('%', #{sv}, '%')
 	</if>
 </select>
+<select id="modifyBoard" parameterType="Integer" resultType="kr.or.ksmart.ksmart_layout1.vo.Board">
+	SELECT 
+		  board_no 		AS boardNo
+		, board_pw 		AS boardPw
+		, board_title 	AS boardTitle
+		, board_content AS boardContent
+		, board_user 	AS boardUser
+		, board_date AS boardDate
+	FROM board
+	WHERE board_no = #{boardNo}
+
+</select>
+<update id="ModifyBoard" parameterType="kr.or.ksmart.ksmart_layout1.vo.Board">
+	UPDATE board
+	<trim prefix="SET" prefixOverrides=",">
+
+		<if test="boardTitle neq null || boardTitle neq ''.toString()">,board_title=#{boardTitle}</if>
+		<if test="boardContent neq null || boardContent neq ''.toString()">,board_content=#{boardContent}</if>
+	</trim>
+	<if test="boardPw neq null || boardPw neq ''.toString()">
+	WHERE 
+		board_no=#{boardNo}
+	AND board_pw=#{boardPw}
+	</if>
+</update>
+<delete id="DelBoard" parameterType="kr.or.ksmart.ksmart_layout1.vo.Board">
+	DELETE FROM board 
+	WHERE board_no=#{boardNo}
+	AND board_pw=#{boardPw}
+
+</delete>
 
 </mapper>

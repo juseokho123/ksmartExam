@@ -17,4 +17,10 @@ public interface BoardMapper {
 	public List<Board> boardList(Map<String,Integer> map);
 	
 	public List<Board> searchList(String sk,String sv);
+	
+	public Board modifyBoard(int boardNo);
+	
+	public int ModifyBoard(Board board);
+	
+	public int DelBoard(Board board);
 }

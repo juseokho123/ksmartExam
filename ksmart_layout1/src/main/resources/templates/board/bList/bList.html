@@ -24,6 +24,11 @@
 			<td>글 내용</td>
 			<td>글쓴이</td>
 			<td>글 등록일자</td>
+			<th:block th:if="${session.S_ID !=null}">
+				<td>수정</td>
+				<td>삭제</td>
+			</th:block>
+			
 		</tr>
 		<tr th:each="B : ${boardList}">
 			<td th:text="${B.boardNo}"></td>
@@ -32,10 +37,18 @@
 			<td th:text="${#strings.abbreviate(B.boardContent,20)}"></td>
 			<td th:text="${B.boardUser}"></td>
 			<td th:text="${B.boardDate}"></td>
+			<th:block th:if="${session.S_ID !=null}">
+			<td>
+				<a th:href="@{/modifyBoard(boardNo=${B.boardNo})}">수정</a>
+			</td>
+			<td>
+				<a th:href="@{/delBoard(boardNo=${B.boardNo})}">삭제</a>
+			</td>
+			</th:block>
 		</tr>
 	</table>
 		<!-- 처음 -->
-			<a th:href="@{/bList}">[처음]</a>
+			<a th:if="${currentPage >1}" th:href="@{/bList}">[처음]</a>
 		<!-- 이전 -->
 		<a th:if="${currentPage >1}" th:href="@{/bList(currentPage=${currentPage-1})}">[이전]</a>
 		<th:block th:each="num:${#numbers.sequence(startPageNum,lastPageNum)}">			
@@ -46,7 +59,7 @@
 		<!-- 다음 -->
 		<a th:if="${currentPage < lastPage}" th:href="@{/bList(currentPage=${currentPage+1})}">[다음]</a>
 		<!-- 마지막 -->
-			<a th:href="@{/bList(currentPage=${lastPage})}">[마지막]</a>
+			<a th:if="${currentPage < lastPage}" th:href="@{/bList(currentPage=${lastPage})}">[마지막]</a>
 </th:block>
 
 </html>

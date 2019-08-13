@@ -34,9 +34,10 @@
 			<td>상품색상</td>			
 			<td>상품크기</td>	
 			<td>상품등록날짜</td>
-			<td>상품상세설명</td>		
-			<td>수정</td>
-			<td>삭제</td>
+			<td>상품상세설명</td>
+			<td th:if="${session.S_LEVEL eq '판매자' || session.S_LEVEL eq '관리자'}">수정</td>
+			<td th:if="${session.S_LEVEL eq '판매자' || session.S_LEVEL eq '관리자'}">삭제</td>
+
 		</tr>
 		<tr th:each="g: ${goodsList}">
 			<td th:text="${g.memberId}"></td>
@@ -52,11 +53,11 @@
 			<td th:text="${g.goodsSize}"></td>
 			<td th:text="${g.goodsDate}"></td>
 			<td th:text="${g.goodsDesc}"></td>
-			<td>
+			<td th:if="${session.S_LEVEL eq '판매자' || session.S_LEVEL eq '관리자'}">
 				<!-- /modifyMember?memberId="값" -->
 				<a th:href="@{/modifyGoods(goodsCode=${g.goodsCode})}">수정</a>
-			</td>
-			<td>
+			</td >
+			<td th:if="${session.S_LEVEL eq '판매자' || session.S_LEVEL eq '관리자'}">
 				<a th:href="@{/delGoods(goodsCode=${g.goodsCode})}">삭제</a>
 			</td>
 		</tr>

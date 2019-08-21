@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		$('#ajaxCall').click(function(){
+			//ajax 호출을 위한 정보 기입
+			var request = $.ajax({
+			  url: "http://localhost/ajaxTest",
+			  method: "POST", //전송방식
+			  data: { currentPage : $('#currentPage').val() }, //파라미터
+			  dataType: "json" //전송받을 타입 xml,html,test,json
+			});
+			
+			//호출 정상 일시 실행되는 메서드
+			request.done(function( data ) {
+			  console.log(data);
+			});
+			//호출 에러일시 실행되는 메서드
+			request.fail(function( jqXHR, textStatus ) {
+			  alert( "Request failed: " + textStatus );
+			}); 
+			//호출 정상 또는 에러 상관없이 정상 또는 에러 실행이후 실행
+			request.always(function() {
+			    alert( "complete" );
+			  });
+
+		});
+	});
+</script>
+
+
+</head>
+<body>
+	<input type="number" id="currentPage" value="1"/>
+	<button type="button" id="ajaxCall">ajax호출</button>
+</body>
+</html>
